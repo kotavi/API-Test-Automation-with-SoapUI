@@ -53,9 +53,38 @@ def inputFilePath = testRunner.testCase.testSuite.getPropertyValue('inputFile')
 File file = new File(inputFilePath.toString()).eachLine{
 	 testRunner.testCase.testSuite.setPropertyValue('inArea', it.split(",")[0])
 	 testRunner.testCase.testSuite.setPropertyValue('inLocation', it.split(",")[1])
+	 
+	 def testCase = testRunner.testCase.testSuite.testCases['TestCase 1']
+	 def runner = testCase.run(null, false)
 
 }
 ```
+
+### Test suite setup and teardown
+
+Add to 'Setup Script' of the 'TestStep'
+```groovy
+def inputFilePath = testRunner.testCase.testSuite.getPropertyValue('inputFile')
+
+def myFile = new File(inputFilePath)
+
+def lines = myFile.readLines()
+context.mylines = lines
+assert lines.size() == 4
+```
+
+Change script of reading file to:
+
+```groovy
+context.mylines.each{
+	testRunner.testCase.testSuite.setPropertyValue('inArea', it.split(",")[0])
+     testRunner.testCase.testSuite.setPropertyValue('inLocation', it.split(",")[1])
+     def testCase = testRunner.testCase.testSuite.testCases['TestCase 1']
+     def runner = testCase.run(null, false)
+     sleep 500
+}
+```
+
 ### Useful links
 
 - https://www.soapui.org/resources/tutorials/rest-sample-project.html?utm_source=soapui&utm_medium=starterpage
