@@ -85,10 +85,26 @@ context.mylines.each{
 }
 ```
 
+### Script Assertions
+
+```groovy
+def response_message = messageExchange.responseContent
+def response_json = new groovy.json.JsonSlurper().parseText(response_message)
+
+if (1 <= response_json.day_of_year & response_json.day_of_year < 366) {
+	assert true	
+} else {
+	log.info("wrong day of year: ${response_json.day_of_year}")
+	assert false
+}
+```
+
 ### Useful links
 
 - https://www.soapui.org/resources/tutorials/rest-sample-project.html?utm_source=soapui&utm_medium=starterpage
 - https://api.carbonintensity.org.uk/
 - https://deckofcardsapi.com/
 - http://worldtimeapi.org/
+- [Assertions in SoapUI](https://www.guru99.com/assertions-soapui-complete-tutorial.html)
+
 
