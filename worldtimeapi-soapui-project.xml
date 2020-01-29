@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="9a0f9a06-27e5-4513-a50e-8a799d97b7b4" activeEnvironment="Default" name="worldtimeapi" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="98c929b2-32f9-477e-8d37-24e11df29533" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://worldtimeapi.org" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://worldtimeapi.org</con:endpoint></con:endpoints><con:resource name="" path="/api/timezones" id="b34dd041-fd62-4ff4-9987-41455e827aad"><con:settings/><con:parameters/><con:method name="API 1" id="44627955-c8e1-4a09-a9ee-0db9dd19b6a7" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Request 1" id="95043078-b567-456f-8caf-d45f442b718d" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://worldtimeapi.org</con:endpoint><con:request/><con:originalUri>http://worldtimeapi.org/api/timezones</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="{location}" path="/api/timezone/{area}/{location}" id="e4ef9174-9724-4ae3-a38c-94f0835d5593"><con:settings/><con:parameters><con:parameter><con:name>area</con:name><con:value>area</con:value><con:style>TEMPLATE</con:style><con:default>area</con:default></con:parameter><con:parameter><con:name>location</con:name><con:value>location</con:value><con:style>TEMPLATE</con:style><con:default>location</con:default></con:parameter></con:parameters><con:method name="Method 1" id="5d09d856-f2ab-4643-9b5a-822a59bf8fc9" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element xmlns:loc="http://worldtimeapi.org/api/timezone/area/location">loc:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:abid="http://worldtimeapi.org/api/timezone/Africa/Abidjan">abid:Response</con:element></con:representation><con:request name="Request 1" id="dcf2693b-d5cd-44b9-875c-6299e4e51d74" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://worldtimeapi.org</con:endpoint><con:request/><con:originalUri>http://worldtimeapi.org/api/timezone/Africa/Abidjan</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="area" value="Africa"/>
+  <con:entry key="location" value="Abidjan"/>
+</con:parameters></con:request></con:method></con:resource></con:interface><con:testSuite id="7531ecad-8223-433b-9a1b-c7debcb387ed" name="DDT Test Suite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="c9690b43-4eb1-48c7-b3a7-16e005751231" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true" disabled="true"><con:settings/><con:testStep type="restrequest" name="Get Local Time" id="442962fb-8968-4b61-9055-61d76b2a10e3"><con:settings/><con:config service="http://worldtimeapi.org" resourcePath="/api/timezone/{area}/{location}" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get Local Time" id="dcf2693b-d5cd-44b9-875c-6299e4e51d74" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://worldtimeapi.org</con:endpoint><con:request/><con:originalUri>http://worldtimeapi.org/api/timezone/area/location</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="area" value=""/>
+  <con:entry key="location" value=""/>
+</con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="766c0d73-ea76-47b7-8bcd-3c60e6e96440" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="GetInputs" searchProperties="true"><con:settings/><con:testStep type="groovy" name="Groovy Script" id="ed6e77ae-9bd9-4740-a7da-236971904f3a"><con:settings/><con:config><script>//def inputFilePath = testRunner.testCase.testSuite.getPropertyValue('inputFile')
+
+//File file = new File(inputFilePath.toString()).eachLine{
+//	 testRunner.testCase.testSuite.setPropertyValue('inArea', it.split(",")[0])
+//	 testRunner.testCase.testSuite.setPropertyValue('inLocation', it.split(",")[1])
+//
+//	 def testCase = testRunner.testCase.testSuite.testCases['TestCase 1']
+//
+//	 def runner = testCase.run(null, false)
+//
+//	 log.info("${runner.status}")
+//	 sleep 500
+//}
+
+context.mylines.each{
+	testRunner.testCase.testSuite.setPropertyValue('inArea', it.split(",")[0])
+     testRunner.testCase.testSuite.setPropertyValue('inLocation', it.split(",")[1])
+     def testCase = testRunner.testCase.testSuite.testCases['TestCase 1']
+     def runner = testCase.run(null, false)
+     sleep 500
+}</script></con:config></con:testStep><con:setupScript>def inputFilePath = testRunner.testCase.testSuite.getPropertyValue('inputFile')
+
+def myFile = new File(inputFilePath)
+
+def lines = myFile.readLines()
+context.mylines = lines
+assert lines.size() == 4</con:setupScript><con:properties/></con:testCase><con:properties><con:property><con:name>inputFile</con:name><con:value>/Users/tetianakorchak/Documents/gettingReadyForTheInterview/API-Test-Automation-with-SoapUI/worldtimeInput.csv</con:value></con:property><con:property><con:name>inArea</con:name><con:value>Australia</con:value></con:property><con:property><con:name>inLocation</con:name><con:value>Sydney</con:value></con:property></con:properties></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

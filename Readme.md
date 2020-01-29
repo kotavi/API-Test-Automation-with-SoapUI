@@ -1,4 +1,18 @@
+## SoupUI
 
+See LinkedIn course [API Test Automation with SoapUI](https://www.linkedin.com/learning/api-test-automation-with-soapui/creating-your-first-project-in-soapui)
+
+### First project
+
+https://api.carbonintensity.org.uk/
+
+
+SoapUI can do Groovy scripting. To get today’s date into some fields that require a date:
+
+
+```groovy
+${=def now = new Date();now.format("yyyy-MM-dd")}
+```
 
 #### To extract value for *deck_id* from JSON
 ```
@@ -9,7 +23,7 @@
    "deck_id": "qdsfmvpz4hau"
 }
 ```
-`${<TestStepName>#Response#$deck_id>}`
+**`${<TestStepName>#Response#$deck_id>}`**
 
 #### To extract value for *code* from JSON
 ```
@@ -32,10 +46,20 @@
 
 `${<TestStepName>#Response#$cards[0].code}`
 
+
+### To read data from csv file
+```
+def inputFilePath = testRunner.testCase.testSuite.getPropertyValue('inputFile')
+File file = new File(inputFilePath.toString()).eachLine{
+	 testRunner.testCase.testSuite.setPropertyValue('inArea', it.split(",")[0])
+	 testRunner.testCase.testSuite.setPropertyValue('inLocation', it.split(",")[1])
+
+}
+```
 ### Useful links
 
 - https://www.soapui.org/resources/tutorials/rest-sample-project.html?utm_source=soapui&utm_medium=starterpage
 - https://api.carbonintensity.org.uk/
 - https://deckofcardsapi.com/
-
+- http://worldtimeapi.org/
 
