@@ -114,8 +114,18 @@ Go to File -> Preferences -> Global Properties.
 *#Global#* - global variables
 *#Env#* - environment variables
 
+### MacOS: run test cases from command line
 
+```sh
+$ cd /Applications/SoapUI-5.5.0.app/Contents/java/app/bin/.
 
+$ sudo ./testrunner.sh <path_to_project_xml> -r
+
+$ sudo ./testrunner.sh <path_to_project_xml> -r -f <path_to_file_report_to_save> -a
+```
+where r - to generate report, -f store it to the file, -a - store all results, by default it stores results only for 
+failed cases
+ 
 ### Useful links
 
 - https://www.soapui.org/resources/tutorials/rest-sample-project.html?utm_source=soapui&utm_medium=starterpage
