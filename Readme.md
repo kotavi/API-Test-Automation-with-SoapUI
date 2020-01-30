@@ -1,4 +1,4 @@
-## SoupUI
+## SoapUI
 
 See LinkedIn course [API Test Automation with SoapUI](https://www.linkedin.com/learning/api-test-automation-with-soapui/creating-your-first-project-in-soapui)
 
