@@ -125,7 +125,20 @@ $ sudo ./testrunner.sh <path_to_project_xml> -r -f <path_to_file_report_to_save>
 ```
 where r - to generate report, -f store it to the file, -a - store all results, by default it stores results only for 
 failed cases
- 
+
+### Run test cases inside docker container
+
+```sh
+$ service docker status
+
+$ docker run --name soaprunner -d -p 3000:3000 ddavison/soapui
+
+$ curl --form "project=@downloads/deckofcardsapi-soapui-project.xml" --form "suite=TestSuite 1 - deck" --form "option=-r" http://192.168.1.85:3000/
+
+```
+After container was started go to `http://192.168.1.85:3000/`, where `192.168.1.85` is a server where my container was started
+
+
 ### Useful links
 
 - https://www.soapui.org/resources/tutorials/rest-sample-project.html?utm_source=soapui&utm_medium=starterpage
