@@ -12,6 +12,10 @@ SoapUI can do Groovy scripting. To get today’s date into some fields that requ
 
 ```groovy
 ${=def now = new Date();now.format("yyyy-MM-dd")}
+
+${= new Date().format("yyyy-MM-dd")}
+
+${= new Date().plus(365).format("yyyy-MM-dd")}
 ```
 
 #### To extract value for *deck_id* from JSON
@@ -99,6 +103,19 @@ if (1 <= response_json.day_of_year & response_json.day_of_year < 366) {
 }
 ```
 
+### Global properties
+
+*inputFile* from the examples above can be used only in the test case where it was defined.
+To define it somewhere more global SoapUI lets us do that with Global Properties. 
+Go to File -> Preferences -> Global Properties.
+
+`def inputFilePath = context.expand('${#Global#inputFile}')`
+
+*#Global#* - global variables
+*#Env#* - environment variables
+
+
+
 ### Useful links
 
 - https://www.soapui.org/resources/tutorials/rest-sample-project.html?utm_source=soapui&utm_medium=starterpage
@@ -106,5 +123,7 @@ if (1 <= response_json.day_of_year & response_json.day_of_year < 366) {
 - https://deckofcardsapi.com/
 - http://worldtimeapi.org/
 - [Assertions in SoapUI](https://www.guru99.com/assertions-soapui-complete-tutorial.html)
+- [Properties](https://www.soapui.org/docs/functional-testing/properties/working-with-properties.html)
+- [SoapUI tips](https://www.soapui.org/scripting-properties/tips-tricks.html)
 
 

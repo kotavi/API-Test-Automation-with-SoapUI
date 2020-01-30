@@ -3,32 +3,42 @@
   <con:entry key="area" value="Africa"/>
   <con:entry key="location" value="Abidjan"/>
 </con:parameters></con:request></con:method></con:resource></con:interface><con:testSuite id="7531ecad-8223-433b-9a1b-c7debcb387ed" name="DDT Test Suite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="766c0d73-ea76-47b7-8bcd-3c60e6e96440" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="GetInputs" searchProperties="true"><con:settings/><con:testStep type="groovy" name="Groovy Script" id="ed6e77ae-9bd9-4740-a7da-236971904f3a"><con:settings/><con:config><script>//def inputFilePath = testRunner.testCase.testSuite.getPropertyValue('inputFile')
-//
-//File file = new File(inputFilePath.toString()).eachLine{
-//	 testRunner.testCase.testSuite.setPropertyValue('inArea', it.split(",")[0])
-//	 testRunner.testCase.testSuite.setPropertyValue('inLocation', it.split(",")[1])
-//
-//	 def testCase = testRunner.testCase.testSuite.testCases['TestCase 1']
-//
-//	 def runner = testCase.run(null, false)
-//
-//	 log.info("${runner.status}")
-//	 sleep 500
-//}
 
-context.mylines.each{
-	testRunner.testCase.testSuite.setPropertyValue('inArea', it.split(",")[0])
-     testRunner.testCase.testSuite.setPropertyValue('inLocation', it.split(",")[1])
-     def testCase = testRunner.testCase.testSuite.testCases['TestCase 1']
-     def runner = testCase.run(null, false)
-     sleep 500
-}</script></con:config></con:testStep><con:setupScript>def inputFilePath = testRunner.testCase.testSuite.getPropertyValue('inputFile')
+def inputFilePath = context.expand('${#Global#inputFile}')
+
+void setProperties(String currentLine) {
+	testRunner.testCase.testSuite.setPropertyValue('inArea', currentLine.split(",")[0])
+	testRunner.testCase.testSuite.setPropertyValue('inLocation', currentLine.split(",")[1])
+}
+File file = new File(inputFilePath.toString()).eachLine{
+	try {
+		setProperties(it)
+
+	 	def testCase = testRunner.testCase.testSuite.testCases['TestCase 1']
+
+	 	def runner = testCase.run(null, false)
+
+	 	log.info("${runner.status}")
+	 	sleep 500
+	 	1/0
+	} catch (Exception) {
+		log.info("Exception")
+	}
+}
+ 
+//context.mylines.each{
+//	testRunner.testCase.testSuite.setPropertyValue('inArea', it.split(",")[0])
+//     testRunner.testCase.testSuite.setPropertyValue('inLocation', it.split(",")[1])
+//     def testCase = testRunner.testCase.testSuite.testCases['TestCase 1']
+//     def runner = testCase.run(null, false)
+//     sleep 500
+//}</script></con:config></con:testStep><con:setupScript>def inputFilePath = testRunner.testCase.testSuite.getPropertyValue('inputFile')
 
 def myFile = new File(inputFilePath)
 
 def lines = myFile.readLines()
 context.mylines = lines
-assert lines.size() == 4</con:setupScript><con:properties/></con:testCase><con:testCase id="c9690b43-4eb1-48c7-b3a7-16e005751231" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Get Local Time" id="442962fb-8968-4b61-9055-61d76b2a10e3"><con:settings/><con:config service="http://worldtimeapi.org" resourcePath="/api/timezone/{area}/{location}" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get Local Time" id="dcf2693b-d5cd-44b9-875c-6299e4e51d74" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://worldtimeapi.org</con:endpoint><con:request/><con:originalUri>http://worldtimeapi.org/api/timezone/area/location</con:originalUri><con:assertion type="Simple Contains" id="222d1b67-921c-4bf0-9f64-85c57157392b" name="Contains"><con:configuration><token>Australia</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="7f0c503c-4828-4949-b801-dfaf82aa2b4d" name="JsonPath Existence Match"><con:configuration><path>$.dst</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Count" id="2dde6b2a-aa17-4cea-bda4-496a39a3359e" name="JsonPath Count"><con:configuration><path>$.dst</path><content>1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="Valid HTTP Status Codes" id="29bd6c6e-b0e0-429a-bb3c-d66fe40f52e7" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Invalid HTTP Status Codes" id="22c11e16-faf9-4b25-891d-d9d600ff8e44" name="Invalid HTTP Status Codes"><con:configuration><codes>404,500</codes></con:configuration></con:assertion><con:assertion type="Response SLA Assertion" id="6f4b7048-6cbd-4729-b227-0125ce195add" name="Response SLA"><con:configuration><SLA>500</SLA></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="50ff89b7-5cfc-4c36-b31d-87662e2852e5" name="Script Assertion"><con:configuration><scriptText>def response_message = messageExchange.responseContent
+assert lines.size() == 4</con:setupScript><con:properties/></con:testCase><con:testCase id="c9690b43-4eb1-48c7-b3a7-16e005751231" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Get Local Time" id="442962fb-8968-4b61-9055-61d76b2a10e3"><con:settings/><con:config service="http://worldtimeapi.org" resourcePath="/api/timezone/{area}/{location}" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get Local Time" id="dcf2693b-d5cd-44b9-875c-6299e4e51d74" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://worldtimeapi.org</con:endpoint><con:request/><con:originalUri>http://worldtimeapi.org/api/timezone/area/location</con:originalUri><con:assertion type="Simple Contains" id="222d1b67-921c-4bf0-9f64-85c57157392b" name="Contains"><con:configuration><token>${=def now = new Date();now.format("yyyy-MM-dd")}</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="7f0c503c-4828-4949-b801-dfaf82aa2b4d" name="JsonPath Existence Match"><con:configuration><path>$.dst</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Count" id="2dde6b2a-aa17-4cea-bda4-496a39a3359e" name="JsonPath Count"><con:configuration><path>$.dst</path><content>1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="Valid HTTP Status Codes" id="29bd6c6e-b0e0-429a-bb3c-d66fe40f52e7" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Invalid HTTP Status Codes" id="22c11e16-faf9-4b25-891d-d9d600ff8e44" name="Invalid HTTP Status Codes"><con:configuration><codes>404,500</codes></con:configuration></con:assertion><con:assertion type="Response SLA Assertion" id="6f4b7048-6cbd-4729-b227-0125ce195add" name="Response SLA"><con:configuration><SLA>500</SLA></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="50ff89b7-5cfc-4c36-b31d-87662e2852e5" name="Script Assertion"><con:configuration><scriptText>def response_message = messageExchange.responseContent
 def response_json = new groovy.json.JsonSlurper().parseText(response_message)
 
 if (1 &lt;= response_json.day_of_year &amp; response_json.day_of_year &lt; 366) {
